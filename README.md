@@ -64,11 +64,20 @@ npm test
 yarn test
 ```
 
+To run tests with coverage report:
+```bash
+npm run test:coverage
+# or
+yarn test:coverage
+```
+
 ## 📦 Available Scripts
 
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run test` - Run tests
+- `npm run test:coverage` - Run tests with coverage report
+- `npm run test:watch` - Run tests in watch mode
 - `npm run lint` - Run linting
 - `npm run format` - Format code
 
