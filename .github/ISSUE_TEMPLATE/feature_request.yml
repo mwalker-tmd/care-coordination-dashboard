@@ -1,0 +1,46 @@
+name: Feature Request
+description: Track a new feature or enhancement for Care Coordination Dashboard.
+title: "[Feature]: "
+labels: ["enhancement"]
+assignees:
+  - mwalker-tmd
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 📝 Please fill out this form to create a new feature ticket.
+  - type: input
+    id: summary
+    attributes:
+      label: 🎯 Feature Summary
+      description: Brief one-line description of the feature.
+      placeholder: "e.g. Calendar: Implement Daily Appointment List"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: 📄 Description
+      description: Detail what this feature will accomplish.
+      placeholder: |
+        e.g. Implement daily appointment list using Zustand state management, connect to backend, render patient list, etc.
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: 📋 Acceptance Criteria
+      description: List acceptance criteria for this feature.
+      placeholder: |
+        - Appointment list is displayed.
+        - State management functions correctly.
+        - Tests added.
+        - Documentation updated.
+    validations:
+      required: true
+  - type: textarea
+    id: related
+    attributes:
+      label: 🔗 Related Issues / Epics
+      description: Link any related tickets.
+      placeholder: "e.g. #123"
