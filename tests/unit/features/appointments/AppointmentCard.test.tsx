@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { AppointmentCard } from '../../../src/features/appointments/AppointmentCard';
-import { Appointment } from '../../../src/types/appointment';
+import { AppointmentCard } from '../../../../src/features/appointments/AppointmentCard';
+import { Appointment } from '../../../../src/types/appointment';
 
 describe('AppointmentCard', () => {
   const createMockAppointment = (status: Appointment['status']): Appointment => ({
