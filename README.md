@@ -14,7 +14,7 @@ An open-source React dashboard for healthcare appointment management, built with
 - React
 - TypeScript
 - Vite
-- MSW (Mock Service Worker) for API mocking
+- Jest for testing and mocking
 - Zustand for modern state management
 - Comprehensive testing suite
 
@@ -43,7 +43,6 @@ An open-source React dashboard for healthcare appointment management, built with
    Create a `.env` file in the root directory with the following variables:
    ```
    VITE_API_BASE_URL=http://localhost:3001 # Replace with your backend API server's URL
-   VITE_ENABLE_MOCK_API=true  # Toggle for MSW API mocking
    ```
 
 4. **Start the development server**
