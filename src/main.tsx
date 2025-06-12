@@ -1,13 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { startMockServiceWorker } from './mocks/browser';
-import App from './App';
+import { AppointmentList } from './features/appointments/AppointmentList';
+import './index.css';
 
-// Initialize MSW if enabled
-startMockServiceWorker().then(() => {
-  ReactDOM.createRoot(document.getElementById('root')!).render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-  );
-});
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <React.StrictMode>
+    <AppointmentList />
+  </React.StrictMode>
+);
