@@ -53,4 +53,12 @@ describe('AppointmentList', () => {
       expect(screen.getByText('No appointments for today.')).toBeInTheDocument();
     });
   });
+
+  it('renders error message when error is present', () => {
+    // Mock fetchAllAppointments to do nothing
+    jest.spyOn(useAppointmentStore.getState(), 'fetchAllAppointments').mockImplementation(() => Promise.resolve());
+    useAppointmentStore.setState({ appointments: [], error: 'Something went wrong', isLoading: false });
+    render(<AppointmentList />);
+    expect(screen.getByText(/Error: Something went wrong/)).toBeInTheDocument();
+  });
 });

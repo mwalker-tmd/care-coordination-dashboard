@@ -68,4 +68,12 @@ describe('WeeklyAppointmentList', () => {
 
     expect(screen.getAllByText(/No appointments/i).length).toBe(7);
   });
+
+  it('renders error message when error is present', () => {
+    // Mock fetchAllAppointments to do nothing
+    jest.spyOn(useAppointmentStore.getState(), 'fetchAllAppointments').mockImplementation(() => Promise.resolve());
+    useAppointmentStore.setState({ appointments: [], error: 'Something went wrong', isLoading: false });
+    render(<WeeklyAppointmentList />);
+    expect(screen.getByText(/Error: Something went wrong/)).toBeInTheDocument();
+  });
 });
