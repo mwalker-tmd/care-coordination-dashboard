@@ -1,34 +1,35 @@
 import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { AppointmentList } from '../../../../src/features/appointments/AppointmentList';
+import AppointmentList from '../../../../src/features/appointments/AppointmentList';
 import * as clientApi from '../../../../src/lib/api/client';
+import { useAppointmentStore } from '../../../../src/lib/state/appointmentStore';
 
-// mock API client
-jest.spyOn(clientApi, 'fetchAppointments').mockResolvedValue([
-  {
-    id: '1',
-    patientName: 'Alice Johnson',
-    time: '06/10/2025 09:00',
-    status: 'upcoming',
-  },
-  {
-    id: '2',
-    patientName: 'Bob Smith',
-    time: '06/10/2025 10:30',
-    status: 'completed',
-  },
-  {
-    id: '3',
-    patientName: 'Carol White',
-    time: '06/12/2025 13:00',
-    status: 'cancelled',
-  },
-]);
+jest.mock('../../../../src/lib/api/client', () => {
+  const today = new Date();
+  // Set local time for appointments
+  const nine = new Date(today); nine.setHours(9, 0, 0, 0);
+  const tenThirty = new Date(today); tenThirty.setHours(10, 30, 0, 0);
+  const thirteen = new Date(today); thirteen.setHours(13, 0, 0, 0);
+
+  const mockAppointments = [
+    { id: '1', patientName: 'Alice Johnson', time: nine.toISOString(), status: 'completed' },
+    { id: '2', patientName: 'Bob Smith', time: tenThirty.toISOString(), status: 'upcoming' },
+    { id: '3', patientName: 'Carol White', time: thirteen.toISOString(), status: 'cancelled' },
+  ];
+
+  return {
+    fetchAppointments: jest.fn().mockResolvedValue(mockAppointments),
+  };
+});
 
 describe('AppointmentList', () => {
-  test('renders fetched appointments', async () => {
-    render(<AppointmentList />);
+  beforeEach(() => {
+    useAppointmentStore.setState({ appointments: [] });
+  });
 
+  it('renders fetched appointments', async () => {
+    render(<AppointmentList />);
+    
     await waitFor(() => {
       expect(screen.getByText(/Alice Johnson/)).toBeInTheDocument();
       expect(screen.getByText(/Bob Smith/)).toBeInTheDocument();
@@ -36,17 +37,20 @@ describe('AppointmentList', () => {
     });
   });
 
-  test('renders the heading', () => {
+  it('renders the heading', async () => {
     render(<AppointmentList />);
-    expect(screen.getByText("Today's Appointments")).toBeInTheDocument();
+    
+    await waitFor(() => {
+      expect(screen.getByText("Today's Appointments")).toBeInTheDocument();
+    });
   });
 
-  test('renders empty state when there are no appointments', async () => {
-    (clientApi.fetchAppointments as jest.Mock).mockResolvedValueOnce([]);
+  it('renders empty state when there are no appointments', async () => {
+    jest.spyOn(clientApi, 'fetchAppointments').mockResolvedValueOnce([]);
     render(<AppointmentList />);
+    
     await waitFor(() => {
-      // Should not find any AppointmentCard
-      expect(screen.queryByText(/Status:/i)).not.toBeInTheDocument();
+      expect(screen.getByText('No appointments for today.')).toBeInTheDocument();
     });
   });
 });

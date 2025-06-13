@@ -1,12 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAppointmentStore } from '../../lib/state/appointmentStore';
 import { DayColumn } from './DayColumn';
-import { startOfWeek, addDays, format, parseISO, isSameDay } from 'date-fns';
+import { startOfWeek, addDays } from 'date-fns';
 
-export const WeeklyAppointmentList: React.FC = () => {
-  const { appointments } = useAppointmentStore();
+const WeeklyAppointmentList: React.FC = () => {
+  const { fetchAllAppointments, getAppointmentsByDate, isLoading, error } = useAppointmentStore();
+
   const today = new Date();
-  const weekStart = startOfWeek(today, { weekStartsOn: 0 }); // Sunday
+  const weekStart = startOfWeek(today, { weekStartsOn: 0 });
+
+  useEffect(() => {
+    fetchAllAppointments();
+  }, [fetchAllAppointments]);
+
+  if (isLoading) return <p>Loading appointments...</p>;
+  if (error) return <p>Error: {error}</p>;
 
   const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
 
@@ -14,16 +22,12 @@ export const WeeklyAppointmentList: React.FC = () => {
     <div>
       <h2>Weekly Appointments</h2>
       <div style={{ display: 'flex', gap: '1rem' }}>
-        {days.map((day) => (
-          <DayColumn
-            key={day.toISOString()}
-            date={day}
-            appointments={appointments.filter(
-              (appt) => isSameDay(parseISO(appt.time), day)
-            )}
-          />
+        {days.map(day => (
+          <DayColumn key={day.toISOString()} date={day} appointments={getAppointmentsByDate(day)} />
         ))}
       </div>
     </div>
   );
 };
+
+export default WeeklyAppointmentList;

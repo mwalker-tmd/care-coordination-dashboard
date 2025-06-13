@@ -1,25 +1,76 @@
 import { Appointment } from '../../types/appointment';
+import { startOfWeek, addDays } from 'date-fns';
 
 export async function fetchAppointments(): Promise<Appointment[]> {
-  // Stubbed test data
+  // Get the start of the current week (Sunday)
+  const weekStart = startOfWeek(new Date(), { weekStartsOn: 0 });
+
+  // Calculate days
+  const monday = addDays(weekStart, 1);
+  const tuesday = addDays(weekStart, 2);
+  const wednesday = addDays(weekStart, 3);
+  const thursday = addDays(weekStart, 4);
+  const friday = addDays(weekStart, 5);
+
+  // Set local times for appointments
+  const mondaySixteen = new Date(monday);
+  mondaySixteen.setHours(16, 0, 0, 0);
+  const tuesdayNine = new Date(tuesday);
+  tuesdayNine.setHours(9, 0, 0, 0);
+  const tuesdayTenThirty = new Date(tuesday);
+  tuesdayTenThirty.setHours(10, 30, 0, 0);
+  const wednesdayFourteen = new Date(wednesday);
+  wednesdayFourteen.setHours(14, 0, 0, 0);
+  const thursdayThirteen = new Date(thursday);
+  thursdayThirteen.setHours(13, 0, 0, 0);
+  const fridayEleven = new Date(friday);
+  fridayEleven.setHours(11, 0, 0, 0);
+  const fridayFifteen = new Date(friday);
+  fridayFifteen.setHours(15, 0, 0, 0);
+
+  // Stubbed test data with times relative to current week
   return [
     {
       id: '1',
       patientName: 'Alice Johnson',
-      time: '06/10/2025 09:00',
+      time: tuesdayNine.toISOString(),
       status: 'completed',
     },
     {
       id: '2',
       patientName: 'Bob Smith',
-      time: '06/10/2025 10:30',
-      status: 'upcoming',
+      time: tuesdayTenThirty.toISOString(),
+      status: 'cancelled',
     },
     {
       id: '3',
       patientName: 'Carol White',
-      time: '06/12/2025 13:00',
+      time: thursdayThirteen.toISOString(),
       status: 'cancelled',
+    },
+    {
+      id: '4',
+      patientName: 'Vignesh Kumar',
+      time: mondaySixteen.toISOString(),
+      status: 'completed',
+    },
+    {
+      id: '5',
+      patientName: 'Maria Rodriguez',
+      time: wednesdayFourteen.toISOString(),
+      status: 'completed',
+    },
+    {
+      id: '6',
+      patientName: 'Amina Hassan',
+      time: fridayEleven.toISOString(),
+      status: 'upcoming',
+    },
+    {
+      id: '7',
+      patientName: 'David Chen',
+      time: fridayFifteen.toISOString(),
+      status: 'upcoming',
     },
   ];
 }

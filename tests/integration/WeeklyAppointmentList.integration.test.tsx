@@ -1,45 +1,45 @@
 import React from 'react';
 import { render, screen, within } from '@testing-library/react';
-import { WeeklyAppointmentList } from '../../src/features/appointments/WeeklyAppointmentList';
+import WeeklyAppointmentList from '../../src/features/appointments/WeeklyAppointmentList';
+import * as clientApi from '../../src/lib/api/client';
+import { useAppointmentStore } from '../../src/lib/state/appointmentStore';
+import { startOfWeek, addDays, format } from 'date-fns';
 
-// Mock data
-const mockAppointments = [
-  { id: '1', patientName: 'Alice Johnson', time: '2025-06-10T09:00:00Z', status: 'completed' }, // Tuesday
-  { id: '2', patientName: 'Bob Smith', time: '2025-06-10T10:30:00Z', status: 'upcoming' },   // Tuesday
-  { id: '3', patientName: 'Carol White', time: '2025-06-12T13:00:00Z', status: 'cancelled' }, // Thursday
-];
+jest.mock('../../src/lib/api/client', () => {
+  const { startOfWeek, addDays } = jest.requireActual('date-fns');
+  const weekStart = startOfWeek(new Date(), { weekStartsOn: 0 });
+  const tuesday = addDays(weekStart, 2);
+  const thursday = addDays(weekStart, 4);
 
-// Mock the store
-jest.mock('../../src/lib/state/appointmentStore', () => ({
-  useAppointmentStore: () => ({
-    appointments: mockAppointments,
-    setAppointments: jest.fn(),
-  }),
-}));
+  const tuesdayNine = new Date(tuesday); tuesdayNine.setHours(9, 0, 0, 0);
+  const tuesdayTenThirty = new Date(tuesday); tuesdayTenThirty.setHours(10, 30, 0, 0);
+  const thursdayThirteen = new Date(thursday); thursdayThirteen.setHours(13, 0, 0, 0);
 
-// Mock Date to always return a Sunday for 'today'
-const realDate = Date;
-beforeAll(() => {
-  global.Date = class extends Date {
-    constructor(...args: any[]) {
-      if (args.length === 0) {
-        // Mock today as Sunday, June 8, 2025
-        super('2025-06-08T12:00:00Z');
-      } else {
-        super(...args as [any]);
-      }
-    }
-  } as DateConstructor;
+  const mockAppointments = [
+    { id: '1', patientName: 'Alice Johnson', time: tuesdayNine.toISOString(), status: 'completed' },
+    { id: '2', patientName: 'Bob Smith', time: tuesdayTenThirty.toISOString(), status: 'upcoming' },
+    { id: '3', patientName: 'Carol White', time: thursdayThirteen.toISOString(), status: 'cancelled' },
+  ];
+
+  return {
+    fetchAppointments: jest.fn().mockResolvedValue(mockAppointments),
+  };
 });
-afterAll(() => {
-  global.Date = realDate;
-});
+
+const weekStart = startOfWeek(new Date(), { weekStartsOn: 0 });
+const tuesday = addDays(weekStart, 2);
+const thursday = addDays(weekStart, 4);
 
 describe('WeeklyAppointmentList', () => {
-  it('renders appointments correctly across the weekly view', () => {
-    render(<WeeklyAppointmentList />);
+  beforeEach(() => {
+    useAppointmentStore.setState({ appointments: [] });
+  });
 
-    // Validate day headers exist
+  it('renders appointments correctly across the weekly view', async () => {
+    render(<WeeklyAppointmentList />);
+    await screen.findByText('Weekly Appointments');
+
+    // Validate column headers
     expect(screen.getByText(/Sunday/)).toBeInTheDocument();
     expect(screen.getByText(/Monday/)).toBeInTheDocument();
     expect(screen.getByText(/Tuesday/)).toBeInTheDocument();
@@ -48,43 +48,24 @@ describe('WeeklyAppointmentList', () => {
     expect(screen.getByText(/Friday/)).toBeInTheDocument();
     expect(screen.getByText(/Saturday/)).toBeInTheDocument();
 
-    // Validate appointments display inside correct day columns
-    expect(screen.getByText('Alice Johnson')).toBeInTheDocument();
-    expect(screen.getByText('Bob Smith')).toBeInTheDocument();
-    expect(screen.getByText('Carol White')).toBeInTheDocument();
-  });
+    // Column filtering validation
+    const tuesdayColumn = screen.getByText(`Tuesday ${format(tuesday, 'MM/dd')}`).closest('div');
+    const thursdayColumn = screen.getByText(`Thursday ${format(thursday, 'MM/dd')}`).closest('div');
 
-  it('renders empty state when there are no appointments for the week', () => {
-    jest.resetModules();
-    jest.doMock('../../src/lib/state/appointmentStore', () => ({
-      useAppointmentStore: () => ({
-        appointments: [],
-        setAppointments: jest.fn(),
-      }),
-    }));
-    // Re-require after mocking
-    const { WeeklyAppointmentList: EmptyWeeklyAppointmentList } = require('../../src/features/appointments/WeeklyAppointmentList');
-    render(<EmptyWeeklyAppointmentList />);
-    expect(screen.getAllByText(/No appointments/i).length).toBe(7);
-  });
-
-  it('renders only the correct appointments in each day column', () => {
-    render(<WeeklyAppointmentList />);
-    // Find all day columns by their header
-    const tuesdayColumn = screen.getByText('Tuesday 06/10').closest('div');
-    const thursdayColumn = screen.getByText('Thursday 06/12').closest('div');
-
-    // Check that Tuesday column contains Alice Johnson and Bob Smith
     expect(within(tuesdayColumn!).getByText('Alice Johnson')).toBeInTheDocument();
     expect(within(tuesdayColumn!).getByText('Bob Smith')).toBeInTheDocument();
-    // Should not contain Carol White
     expect(within(tuesdayColumn!).queryByText('Carol White')).toBeNull();
 
-    // Check that Thursday column contains Carol White
     expect(within(thursdayColumn!).getByText('Carol White')).toBeInTheDocument();
-    // Should not contain Alice Johnson or Bob Smith
     expect(within(thursdayColumn!).queryByText('Alice Johnson')).toBeNull();
     expect(within(thursdayColumn!).queryByText('Bob Smith')).toBeNull();
   });
-});
 
+  it('renders empty state when there are no appointments for the week', async () => {
+    jest.spyOn(clientApi, 'fetchAppointments').mockResolvedValueOnce([]);
+    render(<WeeklyAppointmentList />);
+    await screen.findByText('Weekly Appointments');
+
+    expect(screen.getAllByText(/No appointments/i).length).toBe(7);
+  });
+});
