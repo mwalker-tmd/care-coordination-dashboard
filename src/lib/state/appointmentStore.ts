@@ -30,8 +30,12 @@ export const useAppointmentStore = create<AppointmentStore>((set, get) => ({
     try {
       const data = await fetchAppointments();
       set({ appointments: data, isLoading: false });
-    } catch (err: any) {
-      set({ error: err.message || 'Failed to fetch appointments', isLoading: false });
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        set({ error: err.message, isLoading: false });
+      } else {
+        set({ error: 'Failed to fetch appointments', isLoading: false });
+      }
     }
   },
 
@@ -39,7 +43,7 @@ export const useAppointmentStore = create<AppointmentStore>((set, get) => ({
     const appointments = get().appointments;
     const patientFilter = get().patientFilter;
 
-    return appointments.filter((appt) => {
+    return appointments.filter(appt => {
       const apptDate = parseISO(appt.time);
       const dateMatch =
         apptDate.getFullYear() === date.getFullYear() &&
@@ -60,7 +64,7 @@ export const useAppointmentStore = create<AppointmentStore>((set, get) => ({
     const weekEnd = new Date(weekStart);
     weekEnd.setDate(weekStart.getDate() + 7);
 
-    return appointments.filter((appt) => {
+    return appointments.filter(appt => {
       const apptDate = parseISO(appt.time);
       const inWeek = apptDate >= weekStart && apptDate < weekEnd;
 
