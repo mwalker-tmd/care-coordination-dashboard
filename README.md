@@ -38,6 +38,17 @@ An open-source React dashboard for healthcare appointment management, built with
    # or
    yarn install
    ```
+      **Tailwind CSS Notes:**
+    >
+    > This project uses **Tailwind CSS 4.x (pure ESM)** with PostCSS integration.
+    > - Tailwind scaffolding has been pre-wired with:
+    > - `tailwind.config.js`
+    > - `postcss.config.js`
+    > - `@tailwindcss/postcss` adapter
+    >
+    > ✅ No additional Tailwind initialization steps are required.
+    >
+    > _**Note:** If you attempt to run `npx tailwindcss init` and receive ESM/npx errors, this is due to Tailwind 4.x + npm 11 ESM incompatibility. This repo is already fully configured for you._
 
 3. **Environment Setup**
    Create a `.env` file in the root directory with the following variables:
