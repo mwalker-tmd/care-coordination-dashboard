@@ -35,4 +35,18 @@ describe('AppointmentList', () => {
       expect(screen.getByText(/Carol White/)).toBeInTheDocument();
     });
   });
+
+  test('renders the heading', () => {
+    render(<AppointmentList />);
+    expect(screen.getByText("Today's Appointments")).toBeInTheDocument();
+  });
+
+  test('renders empty state when there are no appointments', async () => {
+    (clientApi.fetchAppointments as jest.Mock).mockResolvedValueOnce([]);
+    render(<AppointmentList />);
+    await waitFor(() => {
+      // Should not find any AppointmentCard
+      expect(screen.queryByText(/Status:/i)).not.toBeInTheDocument();
+    });
+  });
 });

@@ -46,4 +46,15 @@ describe('AppointmentCard', () => {
     expect(screen.getByText(mockAppointment.time)).toBeInTheDocument();
     expect(screen.getByText(new RegExp(`Status: ${mockAppointment.status}`, 'i'))).toBeInTheDocument();
   });
+
+  it('applies the correct CSS class for each status', () => {
+    const statuses: Appointment['status'][] = ['upcoming', 'completed', 'cancelled'];
+    statuses.forEach(status => {
+      const mockAppointment = createMockAppointment(status);
+      const { container, unmount } = render(<AppointmentCard appointment={mockAppointment} />);
+      const cardDiv = container.querySelector('.card');
+      expect(cardDiv).toHaveClass(`card-${status}`);
+      unmount();
+    });
+  });
 });

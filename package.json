@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/mwalker-tmd/care-coordination-dashboard#readme",
   "dependencies": {
+    "date-fns": "^4.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^7.6.2",
