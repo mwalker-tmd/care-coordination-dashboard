@@ -1,11 +1,16 @@
 import { create } from 'zustand';
 import { Appointment } from '../../types/appointment';
 import { fetchAppointments } from '../api/client';
+import { parseISO } from 'date-fns';
 
 interface AppointmentStore {
   appointments: Appointment[];
   isLoading: boolean;
   error: string | null;
+
+  patientFilter: string | null;
+  setPatientFilter: (filter: string | null) => void;
+
   fetchAllAppointments: () => Promise<void>;
   getAppointmentsByDate: (date: Date) => Appointment[];
   getAppointmentsForWeek: (weekStart: Date) => Appointment[];
@@ -16,40 +21,54 @@ export const useAppointmentStore = create<AppointmentStore>((set, get) => ({
   isLoading: false,
   error: null,
 
+  patientFilter: null,
+  setPatientFilter: (filter: string | null) => set({ patientFilter: filter }),
+
   fetchAllAppointments: async () => {
     set({ isLoading: true, error: null });
 
     try {
       const data = await fetchAppointments();
       set({ appointments: data, isLoading: false });
-    } catch (err: unknown) {
-      if (err instanceof Error) {
-        set({ error: err.message, isLoading: false });
-      } else {
-        set({ error: 'Failed to fetch appointments', isLoading: false });
-      }
+    } catch (err: any) {
+      set({ error: err.message || 'Failed to fetch appointments', isLoading: false });
     }
   },
 
   getAppointmentsByDate: (date: Date) => {
     const appointments = get().appointments;
-    return appointments.filter(appt => {
-      const apptDate = new Date(appt.time);
-      return (
+    const patientFilter = get().patientFilter;
+
+    return appointments.filter((appt) => {
+      const apptDate = parseISO(appt.time);
+      const dateMatch =
         apptDate.getFullYear() === date.getFullYear() &&
         apptDate.getMonth() === date.getMonth() &&
-        apptDate.getDate() === date.getDate()
-      );
+        apptDate.getDate() === date.getDate();
+
+      const patientMatch = patientFilter
+        ? appt.patientName.toLowerCase().includes(patientFilter.toLowerCase())
+        : true;
+
+      return dateMatch && patientMatch;
     });
   },
 
   getAppointmentsForWeek: (weekStart: Date) => {
     const appointments = get().appointments;
-    return appointments.filter(appt => {
-      const apptDate = new Date(appt.time);
-      const weekEnd = new Date(weekStart);
-      weekEnd.setDate(weekEnd.getDate() + 7);
-      return apptDate >= weekStart && apptDate < weekEnd;
+    const patientFilter = get().patientFilter;
+    const weekEnd = new Date(weekStart);
+    weekEnd.setDate(weekStart.getDate() + 7);
+
+    return appointments.filter((appt) => {
+      const apptDate = parseISO(appt.time);
+      const inWeek = apptDate >= weekStart && apptDate < weekEnd;
+
+      const patientMatch = patientFilter
+        ? appt.patientName.toLowerCase().includes(patientFilter.toLowerCase())
+        : true;
+
+      return inWeek && patientMatch;
     });
   },
 }));

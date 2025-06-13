@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useAppointmentStore } from '../../lib/state/appointmentStore';
 import { DayColumn } from './DayColumn';
 import { startOfWeek, addDays } from 'date-fns';
+import { AppointmentFilter } from '../../components/AppointmentFilter';
 
 const WeeklyAppointmentList: React.FC = () => {
   const { fetchAllAppointments, getAppointmentsByDate, isLoading, error } = useAppointmentStore();
@@ -21,6 +22,8 @@ const WeeklyAppointmentList: React.FC = () => {
   return (
     <div>
       <h2>Weekly Appointments</h2>
+      <AppointmentFilter />
+
       <div style={{ display: 'flex', gap: '1rem' }}>
         {days.map(day => (
           <DayColumn key={day.toISOString()} date={day} appointments={getAppointmentsByDate(day)} />

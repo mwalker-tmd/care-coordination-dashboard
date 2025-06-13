@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useAppointmentStore } from '../../lib/state/appointmentStore';
 import { AppointmentCard } from './AppointmentCard';
 import { Appointment } from '../../types/appointment';
+import { AppointmentFilter } from '../../components/AppointmentFilter';
 
 const AppointmentList: React.FC = () => {
   const { fetchAllAppointments, getAppointmentsByDate, isLoading, error } = useAppointmentStore();
@@ -19,6 +20,7 @@ const AppointmentList: React.FC = () => {
   return (
     <div>
       <h2>Today's Appointments</h2>
+      <AppointmentFilter />
       {todaysAppointments.length === 0 ? (
         <p>No appointments for today.</p>
       ) : (
