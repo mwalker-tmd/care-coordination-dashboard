@@ -38,9 +38,9 @@ An open-source React dashboard for healthcare appointment management, built with
    # or
    yarn install
    ```
-3. **Tailwind CSS Notes**
-
-    > This project uses **TailwindCSS 4.x (pure ESM)** with PostCSS integration.
+      **Tailwind CSS Notes:**
+    >
+    > This project uses **Tailwind CSS 4.x (pure ESM)** with PostCSS integration.
     > - Tailwind scaffolding has been pre-wired with:
     > - `tailwind.config.js`
     > - `postcss.config.js`
