@@ -1,3 +1,4 @@
+import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import Dashboard from '../../src/Dashboard';
 import { useAppointmentStore } from '../../src/lib/state/appointmentStore';
@@ -22,23 +23,23 @@ describe('Dashboard', () => {
     await act(async () => {
       render(<Dashboard />);
     });
-    expect(screen.getByText('Care Coordination Dashboard')).toBeInTheDocument();
+    expect(screen.getByTestId('dashboard-title')).toHaveTextContent('Care Coordination Dashboard');
   });
 
   it('renders both tab buttons', async () => {
     await act(async () => {
       render(<Dashboard />);
     });
-    expect(screen.getByText('Weekly View')).toBeInTheDocument();
-    expect(screen.getByText("Today's Appointments")).toBeInTheDocument();
+    expect(screen.getByTestId('weekly-tab-button')).toHaveTextContent('Weekly View');
+    expect(screen.getByTestId('today-tab-button')).toHaveTextContent("Today's Appointments");
   });
 
   it('starts with Weekly View as the active tab', async () => {
     await act(async () => {
       render(<Dashboard />);
     });
-    const weeklyButton = screen.getByText('Weekly View');
-    const todayButton = screen.getByText("Today's Appointments");
+    const weeklyButton = screen.getByTestId('weekly-tab-button');
+    const todayButton = screen.getByTestId('today-tab-button');
     
     expect(weeklyButton).toHaveClass('bg-blue-500');
     expect(weeklyButton).toHaveClass('text-white');
@@ -50,7 +51,7 @@ describe('Dashboard', () => {
     await act(async () => {
       render(<Dashboard />);
     });
-    const todayButton = screen.getByText("Today's Appointments");
+    const todayButton = screen.getByTestId('today-tab-button');
     
     await act(async () => {
       fireEvent.click(todayButton);
@@ -64,8 +65,8 @@ describe('Dashboard', () => {
     await act(async () => {
       render(<Dashboard />);
     });
-    const weeklyButton = screen.getByText('Weekly View');
-    const todayButton = screen.getByText("Today's Appointments");
+    const weeklyButton = screen.getByTestId('weekly-tab-button');
+    const todayButton = screen.getByTestId('today-tab-button');
     
     // First switch to Today tab
     await act(async () => {
@@ -112,7 +113,7 @@ describe('Dashboard', () => {
       render(<Dashboard />);
     });
 
-    const todayButton = screen.getByText("Today's Appointments");
+    const todayButton = screen.getByTestId('today-tab-button');
     await act(async () => {
       fireEvent.click(todayButton);
     });
@@ -125,7 +126,7 @@ describe('Dashboard', () => {
     await act(async () => {
       render(<Dashboard />);
     });
-    const mainDiv = screen.getByText('Care Coordination Dashboard').parentElement?.parentElement;
+    const mainDiv = screen.getByTestId('dashboard-container');
     
     expect(mainDiv).toHaveClass('min-h-screen');
     expect(mainDiv).toHaveClass('bg-gray-50');
@@ -136,8 +137,8 @@ describe('Dashboard', () => {
     await act(async () => {
       render(<Dashboard />);
     });
-    const weeklyButton = screen.getByText('Weekly View');
-    const todayButton = screen.getByText("Today's Appointments");
+    const weeklyButton = screen.getByTestId('weekly-tab-button');
+    const todayButton = screen.getByTestId('today-tab-button');
     
     // Check common classes
     [weeklyButton, todayButton].forEach(button => {
@@ -173,10 +174,7 @@ describe('Dashboard', () => {
     });
 
     // Find the first appointment card by looking for the container with the hover classes
-    const appointmentCards = screen.getAllByText('John Doe')
-      .map(element => element.closest('div.bg-gray-50.rounded-lg.p-4.border.border-gray-300.shadow-sm.transition'))
-      .filter(Boolean);
-    
+    const appointmentCards = screen.getAllByTestId('appointment-card');
     const appointmentCard = appointmentCards[0];
     expect(appointmentCard).toBeInTheDocument();
 

@@ -36,7 +36,7 @@ describe('WeeklyAppointmentList', () => {
 
   it('renders appointments correctly across the weekly view', async () => {
     render(<WeeklyAppointmentList />);
-    await screen.findByText('Weekly Appointments');
+    await screen.findByTestId('weekly-appointment-list-title');
 
     // Validate column headers
     expect(screen.getByText(/Sunday/)).toBeInTheDocument();
@@ -51,11 +51,13 @@ describe('WeeklyAppointmentList', () => {
     const tuesdayColumn = screen.getByText(`Tuesday ${format(tuesday, 'MM/dd')}`).closest('div');
     const thursdayColumn = screen.getByText(`Thursday ${format(thursday, 'MM/dd')}`).closest('div');
 
-    expect(within(tuesdayColumn!).getByText('Alice Johnson')).toBeInTheDocument();
-    expect(within(tuesdayColumn!).getByText('Bob Smith')).toBeInTheDocument();
+    const tuesdayPatients = within(tuesdayColumn!).getAllByTestId('appointment-patient-name');
+    expect(tuesdayPatients[0]).toHaveTextContent('Alice Johnson');
+    expect(tuesdayPatients[1]).toHaveTextContent('Bob Smith');
     expect(within(tuesdayColumn!).queryByText('Carol White')).toBeNull();
 
-    expect(within(thursdayColumn!).getByText('Carol White')).toBeInTheDocument();
+    const thursdayPatients = within(thursdayColumn!).getAllByTestId('appointment-patient-name');
+    expect(thursdayPatients[0]).toHaveTextContent('Carol White');
     expect(within(thursdayColumn!).queryByText('Alice Johnson')).toBeNull();
     expect(within(thursdayColumn!).queryByText('Bob Smith')).toBeNull();
   });
@@ -63,9 +65,9 @@ describe('WeeklyAppointmentList', () => {
   it('renders empty state when there are no appointments for the week', async () => {
     jest.spyOn(clientApi, 'fetchAppointments').mockResolvedValueOnce([]);
     render(<WeeklyAppointmentList />);
-    await screen.findByText('Weekly Appointments');
+    await screen.findByTestId('weekly-appointment-list-title');
 
-    expect(screen.getAllByText(/No appointments/i).length).toBe(7);
+    expect(screen.getAllByTestId('day-column-empty').length).toBe(7);
   });
 
   it('renders error message when error is present', () => {
@@ -73,6 +75,6 @@ describe('WeeklyAppointmentList', () => {
     jest.spyOn(useAppointmentStore.getState(), 'fetchAllAppointments').mockImplementation(() => Promise.resolve());
     useAppointmentStore.setState({ appointments: [], error: 'Something went wrong', isLoading: false });
     render(<WeeklyAppointmentList />);
-    expect(screen.getByText(/Error: Something went wrong/)).toBeInTheDocument();
+    expect(screen.getByTestId('weekly-appointment-list-error')).toHaveTextContent(/Error: Something went wrong/);
   });
 });

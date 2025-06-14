@@ -15,13 +15,13 @@ describe('AppointmentCard', () => {
     render(<AppointmentCard appointment={mockAppointment} />);
 
     // Check for patient name
-    expect(screen.getByText('John Doe')).toBeInTheDocument();
+    expect(screen.getByTestId('appointment-patient-name')).toHaveTextContent('John Doe');
 
     // Check for time
-    expect(screen.getByText('10:00 AM')).toBeInTheDocument();
+    expect(screen.getByTestId('appointment-time')).toHaveTextContent('10:00 AM');
 
     // Check for status text
-    expect(screen.getByText(/Status: upcoming/i)).toBeInTheDocument();
+    expect(screen.getByTestId('appointment-status')).toHaveTextContent(/upcoming/i);
   });
 
   it('renders different statuses correctly', () => {
@@ -31,7 +31,7 @@ describe('AppointmentCard', () => {
       const mockAppointment = createMockAppointment(status);
       const { unmount } = render(<AppointmentCard appointment={mockAppointment} />);
       
-      expect(screen.getByText(new RegExp(`Status: ${status}`, 'i'))).toBeInTheDocument();
+      expect(screen.getByTestId('appointment-status')).toHaveTextContent(new RegExp(status, 'i'));
       unmount();
     });
   });
@@ -41,25 +41,25 @@ describe('AppointmentCard', () => {
     render(<AppointmentCard appointment={mockAppointment} />);
 
     // Check that all appointment fields are rendered
-    expect(screen.getByText(mockAppointment.patientName)).toBeInTheDocument();
-    expect(screen.getByText(mockAppointment.time)).toBeInTheDocument();
-    expect(screen.getByText(new RegExp(`Status: ${mockAppointment.status}`, 'i'))).toBeInTheDocument();
+    expect(screen.getByTestId('appointment-patient-name')).toHaveTextContent(mockAppointment.patientName);
+    expect(screen.getByTestId('appointment-time')).toHaveTextContent(mockAppointment.time);
+    expect(screen.getByTestId('appointment-status')).toHaveTextContent(new RegExp(mockAppointment.status, 'i'));
   });
 
   it('applies the correct Tailwind classes', () => {
     const mockAppointment = createMockAppointment('upcoming');
-    const { container } = render(<AppointmentCard appointment={mockAppointment} />);
-    const cardDiv = container.firstChild as HTMLElement;
+    render(<AppointmentCard appointment={mockAppointment} />);
+    const card = screen.getByTestId('appointment-card');
     
     // Check for the main Tailwind classes
-    expect(cardDiv).toHaveClass('bg-gray-50');
-    expect(cardDiv).toHaveClass('rounded-lg');
-    expect(cardDiv).toHaveClass('p-4');
-    expect(cardDiv).toHaveClass('border');
-    expect(cardDiv).toHaveClass('border-gray-300');
-    expect(cardDiv).toHaveClass('shadow-sm');
-    expect(cardDiv).toHaveClass('transition');
-    expect(cardDiv).toHaveClass('hover:bg-gray-100');
-    expect(cardDiv).toHaveClass('hover:shadow-md');
+    expect(card).toHaveClass('bg-gray-50');
+    expect(card).toHaveClass('rounded-lg');
+    expect(card).toHaveClass('p-4');
+    expect(card).toHaveClass('border');
+    expect(card).toHaveClass('border-gray-300');
+    expect(card).toHaveClass('shadow-sm');
+    expect(card).toHaveClass('transition');
+    expect(card).toHaveClass('hover:bg-gray-100');
+    expect(card).toHaveClass('hover:shadow-md');
   });
 });

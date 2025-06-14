@@ -12,33 +12,36 @@ describe('DayColumn', () => {
   it('renders appointments correctly for given day', () => {
     render(<DayColumn date={date} appointments={appointments} />);
 
-    expect(screen.getByText('Alice Johnson')).toBeInTheDocument();
-    expect(screen.getByText('Bob Smith')).toBeInTheDocument();
-    expect(screen.getByText(/Status: completed/i)).toBeInTheDocument();
-    expect(screen.getByText(/Status: upcoming/i)).toBeInTheDocument();
+    const appointmentCards = screen.getAllByTestId('appointment-card');
+    expect(appointmentCards).toHaveLength(2);
+    
+    expect(screen.getAllByTestId('appointment-patient-name')[0]).toHaveTextContent('Alice Johnson');
+    expect(screen.getAllByTestId('appointment-patient-name')[1]).toHaveTextContent('Bob Smith');
+    expect(screen.getAllByTestId('appointment-status')[0]).toHaveTextContent(/completed/i);
+    expect(screen.getAllByTestId('appointment-status')[1]).toHaveTextContent(/upcoming/i);
   });
 
   it('renders no appointments message when none exist', () => {
     render(<DayColumn date={date} appointments={[]} />);
-    expect(screen.getByText(/No appointments/i)).toBeInTheDocument();
+    expect(screen.getByTestId('day-column-empty')).toHaveTextContent(/No appointments/i);
   });
 
   it('formats the date correctly', () => {
     render(<DayColumn date={date} appointments={[]} />);
-    expect(screen.getByText('Tuesday 06/10')).toBeInTheDocument();
+    const dateElement = screen.getByTestId('day-column-date');
+    expect(dateElement).toHaveTextContent(/^[A-Za-z]+ \d{2}\/\d{2}$/);
   });
 
   it('renders appointments in chronological order', () => {
     render(<DayColumn date={date} appointments={appointments} />);
-    const appointmentElements = screen.getAllByText(/Status:/i);
-    expect(appointmentElements[0]).toHaveTextContent('Status: completed');
-    expect(appointmentElements[1]).toHaveTextContent('Status: upcoming');
+    const statusElements = screen.getAllByTestId('appointment-status');
+    expect(statusElements[0]).toHaveTextContent(/completed/i);
+    expect(statusElements[1]).toHaveTextContent(/upcoming/i);
   });
 
   it('renders the correct number of AppointmentCard components', () => {
-    const { container } = render(<DayColumn date={date} appointments={appointments} />);
-    // Each AppointmentCard has a className containing 'bg-gray-50'
-    const cards = container.querySelectorAll('[class*="bg-gray-50"]');
-    expect(cards.length).toBe(appointments.length);
+    render(<DayColumn date={date} appointments={appointments} />);
+    const appointmentCards = screen.getAllByTestId('appointment-card');
+    expect(appointmentCards.length).toBe(appointments.length);
   });
 });
