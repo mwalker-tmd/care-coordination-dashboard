@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import WeeklyAppointmentList from '../../src/features/appointments/WeeklyAppointmentList';
 import { AppointmentFilter } from '../../src/components/AppointmentFilter';

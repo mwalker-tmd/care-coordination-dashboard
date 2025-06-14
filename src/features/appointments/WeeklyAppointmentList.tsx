@@ -15,16 +15,23 @@ const WeeklyAppointmentList: React.FC = () => {
   }, [fetchAllAppointments]);
 
   if (isLoading) return <p>Loading appointments...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error) return <p data-testid="weekly-appointment-list-error">Error: {error}</p>;
 
   const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
 
   return (
-    <div>
-      <h2>Weekly Appointments</h2>
-      <AppointmentFilter />
-
-      <div style={{ display: 'flex', gap: '1rem' }}>
+    <div className="p-8 bg-gray-50 min-h-screen" data-testid="weekly-appointment-list-container">
+      <h2
+        className="text-3xl font-bold mb-8 text-center"
+        data-testid="weekly-appointment-list-title"
+      >
+        Weekly Appointments
+      </h2>
+      <div
+        className="max-w-screen-xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8"
+        data-testid="weekly-appointment-list-grid"
+      >
+        <AppointmentFilter />
         {days.map(day => (
           <DayColumn key={day.toISOString()} date={day} appointments={getAppointmentsByDate(day)} />
         ))}

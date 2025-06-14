@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import AppointmentList from '../../src/features/appointments/AppointmentList';
 import * as clientApi from '../../src/lib/api/client';

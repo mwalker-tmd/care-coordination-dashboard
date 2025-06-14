@@ -9,14 +9,16 @@ export const AppointmentFilter: React.FC = () => {
   };
 
   return (
-    <div className="p-2">
-      <label htmlFor="patientFilter">Filter by patient:</label>
+    <div className="mb-6">
+      <label htmlFor="patientFilter" className="block mb-1 font-medium">
+        Filter by patient:
+      </label>
       <input
         id="patientFilter"
         type="text"
         value={patientFilter ?? ''}
         onChange={handleChange}
-        className="border border-gray-300 rounded p-1 ml-2"
+        className="w-full border border-gray-300 rounded-md p-2 shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-transparent transition"
       />
     </div>
   );

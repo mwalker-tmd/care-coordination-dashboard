@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import AppointmentList from '../../../../src/features/appointments/AppointmentList';
 import * as clientApi from '../../../../src/lib/api/client';
@@ -31,9 +30,12 @@ describe('AppointmentList', () => {
     render(<AppointmentList />);
     
     await waitFor(() => {
-      expect(screen.getByText(/Alice Johnson/)).toBeInTheDocument();
-      expect(screen.getByText(/Bob Smith/)).toBeInTheDocument();
-      expect(screen.getByText(/Carol White/)).toBeInTheDocument();
+      const appointmentCards = screen.getAllByTestId('appointment-card');
+      expect(appointmentCards).toHaveLength(3);
+      
+      expect(screen.getAllByTestId('appointment-patient-name')[0]).toHaveTextContent('Alice Johnson');
+      expect(screen.getAllByTestId('appointment-patient-name')[1]).toHaveTextContent('Bob Smith');
+      expect(screen.getAllByTestId('appointment-patient-name')[2]).toHaveTextContent('Carol White');
     });
   });
 
@@ -41,7 +43,7 @@ describe('AppointmentList', () => {
     render(<AppointmentList />);
     
     await waitFor(() => {
-      expect(screen.getByText("Today's Appointments")).toBeInTheDocument();
+      expect(screen.getByTestId('appointment-list-title')).toHaveTextContent("Today's Appointments");
     });
   });
 
@@ -50,7 +52,7 @@ describe('AppointmentList', () => {
     render(<AppointmentList />);
     
     await waitFor(() => {
-      expect(screen.getByText('No appointments for today.')).toBeInTheDocument();
+      expect(screen.getByTestId('appointment-list-empty')).toHaveTextContent('No appointments for today.');
     });
   });
 
@@ -59,6 +61,6 @@ describe('AppointmentList', () => {
     jest.spyOn(useAppointmentStore.getState(), 'fetchAllAppointments').mockImplementation(() => Promise.resolve());
     useAppointmentStore.setState({ appointments: [], error: 'Something went wrong', isLoading: false });
     render(<AppointmentList />);
-    expect(screen.getByText(/Error: Something went wrong/)).toBeInTheDocument();
+    expect(screen.getByTestId('appointment-list-error')).toHaveTextContent(/Error: Something went wrong/);
   });
 });
