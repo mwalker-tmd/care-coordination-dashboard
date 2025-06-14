@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { useAppointmentStore } from '../../lib/state/appointmentStore';
 import { AppointmentCard } from './AppointmentCard';
-import { Appointment } from '../../types/appointment';
 import { AppointmentFilter } from '../../components/AppointmentFilter';
 
 const AppointmentList: React.FC = () => {
@@ -18,15 +17,17 @@ const AppointmentList: React.FC = () => {
   const todaysAppointments = getAppointmentsByDate(today);
 
   return (
-    <div>
-      <h2>Today's Appointments</h2>
+    <div className="p-8 bg-gray-50">
+      <h2 className="text-3xl font-bold mb-8">Today's Appointments</h2>
       <AppointmentFilter />
       {todaysAppointments.length === 0 ? (
-        <p>No appointments for today.</p>
+        <p className="text-gray-400 italic">No appointments for today.</p>
       ) : (
-        todaysAppointments.map((appt: Appointment) => (
-          <AppointmentCard key={appt.id} appointment={appt} />
-        ))
+        <div className="flex flex-col gap-4">
+          {todaysAppointments.map(appt => (
+            <AppointmentCard key={appt.id} appointment={appt} />
+          ))}
+        </div>
       )}
     </div>
   );

@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { DayColumn } from '../../../../src/features/appointments/DayColumn';
 import { Appointment } from '../../../../src/types/appointment';
@@ -38,8 +37,8 @@ describe('DayColumn', () => {
 
   it('renders the correct number of AppointmentCard components', () => {
     const { container } = render(<DayColumn date={date} appointments={appointments} />);
-    // Each AppointmentCard has a className starting with 'card'
-    const cards = container.querySelectorAll('.card');
+    // Each AppointmentCard has a className containing 'bg-gray-50'
+    const cards = container.querySelectorAll('[class*="bg-gray-50"]');
     expect(cards.length).toBe(appointments.length);
   });
 });

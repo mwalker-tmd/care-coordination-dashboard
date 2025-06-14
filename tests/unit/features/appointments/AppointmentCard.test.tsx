@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { AppointmentCard } from '../../../../src/features/appointments/AppointmentCard';
 import { Appointment } from '../../../../src/types/appointment';
@@ -47,14 +46,20 @@ describe('AppointmentCard', () => {
     expect(screen.getByText(new RegExp(`Status: ${mockAppointment.status}`, 'i'))).toBeInTheDocument();
   });
 
-  it('applies the correct CSS class for each status', () => {
-    const statuses: Appointment['status'][] = ['upcoming', 'completed', 'cancelled'];
-    statuses.forEach(status => {
-      const mockAppointment = createMockAppointment(status);
-      const { container, unmount } = render(<AppointmentCard appointment={mockAppointment} />);
-      const cardDiv = container.querySelector('.card');
-      expect(cardDiv).toHaveClass(`card-${status}`);
-      unmount();
-    });
+  it('applies the correct Tailwind classes', () => {
+    const mockAppointment = createMockAppointment('upcoming');
+    const { container } = render(<AppointmentCard appointment={mockAppointment} />);
+    const cardDiv = container.firstChild as HTMLElement;
+    
+    // Check for the main Tailwind classes
+    expect(cardDiv).toHaveClass('bg-gray-50');
+    expect(cardDiv).toHaveClass('rounded-lg');
+    expect(cardDiv).toHaveClass('p-4');
+    expect(cardDiv).toHaveClass('border');
+    expect(cardDiv).toHaveClass('border-gray-300');
+    expect(cardDiv).toHaveClass('shadow-sm');
+    expect(cardDiv).toHaveClass('transition');
+    expect(cardDiv).toHaveClass('hover:bg-gray-100');
+    expect(cardDiv).toHaveClass('hover:shadow-md');
   });
 });

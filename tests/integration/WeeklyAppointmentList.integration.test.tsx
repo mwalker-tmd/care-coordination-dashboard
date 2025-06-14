@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, within } from '@testing-library/react';
 import WeeklyAppointmentList from '../../src/features/appointments/WeeklyAppointmentList';
 import * as clientApi from '../../src/lib/api/client';

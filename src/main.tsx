@@ -1,12 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import AppointmentList from './features/appointments/AppointmentList';
-import WeeklyAppointmentList from './features/appointments/WeeklyAppointmentList';
 import './index.css';
+import Dashboard from './Dashboard';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <WeeklyAppointmentList />
-    <AppointmentList />
+    <Dashboard />
   </React.StrictMode>
 );
