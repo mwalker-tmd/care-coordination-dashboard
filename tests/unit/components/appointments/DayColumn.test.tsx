@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { DayColumn } from '../../../../src/features/appointments/DayColumn';
+import { DayColumn } from '../../../../src/components/appointments/DayColumn';
 import { Appointment } from '../../../../src/types/appointment';
 
 describe('DayColumn', () => {

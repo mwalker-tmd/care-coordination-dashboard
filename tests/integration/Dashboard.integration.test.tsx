@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import AppointmentList from '../../src/features/appointments/AppointmentList';
+import DailyAppointmentList from '../../src/features/appointments/DailyAppointmentList';
 import * as clientApi from '../../src/lib/api/client';
 import { useAppointmentStore } from '../../src/lib/state/appointmentStore';
 
@@ -26,13 +26,13 @@ jest.mock('../../src/lib/api/client', () => {
   };
 });
 
-describe('AppointmentList Integration', () => {
+describe('DailyAppointmentList Integration', () => {
   beforeEach(() => {
     useAppointmentStore.setState({ appointments: [] });
   });
 
   it('renders appointments fetched from API', async () => {
-    render(<AppointmentList />);
+    render(<DailyAppointmentList />);
     expect(clientApi.fetchAppointments).toHaveBeenCalledTimes(1);
 
     await waitFor(() => {

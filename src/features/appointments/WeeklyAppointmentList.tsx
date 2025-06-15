@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { useAppointmentStore } from '../../lib/state/appointmentStore';
-import { DayColumn } from './DayColumn';
+import { DayColumn } from '../../components/appointments/DayColumn';
 import { startOfWeek, addDays } from 'date-fns';
-import { AppointmentFilter } from '../../components/AppointmentFilter';
+import { AppointmentFilter } from '../../components/appointments/AppointmentFilter';
 
 const WeeklyAppointmentList: React.FC = () => {
   const { fetchAllAppointments, getAppointmentsByDate, isLoading, error } = useAppointmentStore();

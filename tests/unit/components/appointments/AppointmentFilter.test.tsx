@@ -1,8 +1,8 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { AppointmentFilter } from '../../../src/components/AppointmentFilter';
-import { useAppointmentStore } from '../../../src/lib/state/appointmentStore';
+import { AppointmentFilter } from '../../../../src/components/appointments/AppointmentFilter';
+import { useAppointmentStore } from '../../../../src/lib/state/appointmentStore';
 
-jest.mock('../../../src/lib/state/appointmentStore', () => ({
+jest.mock('../../../../src/lib/state/appointmentStore', () => ({
   useAppointmentStore: jest.fn(),
 }));
 

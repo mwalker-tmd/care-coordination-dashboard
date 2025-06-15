@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import { AppointmentCard } from '../../../../src/features/appointments/AppointmentCard';
+import { AppointmentCard } from '../../../../src/components/appointments/AppointmentCard';
 import { Appointment } from '../../../../src/types/appointment';
 
 describe('AppointmentCard', () => {
