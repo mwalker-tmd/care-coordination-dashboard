@@ -1,5 +1,5 @@
 import React from 'react';
-import { useAppointmentStore } from '../lib/state/appointmentStore';
+import { useAppointmentStore } from '../../lib/state/appointmentStore';
 
 export const AppointmentFilter: React.FC = () => {
   const { patientFilter, setPatientFilter } = useAppointmentStore();

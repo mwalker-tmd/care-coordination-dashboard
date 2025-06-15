@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import { useAppointmentStore } from '../../lib/state/appointmentStore';
-import { AppointmentCard } from './AppointmentCard';
-import { AppointmentFilter } from '../../components/AppointmentFilter';
+import { AppointmentCard } from '../../components/appointments/AppointmentCard';
+import { AppointmentFilter } from '../../components/appointments/AppointmentFilter';
 
-const AppointmentList: React.FC = () => {
+const DailyAppointmentList: React.FC = () => {
   const { fetchAllAppointments, getAppointmentsByDate, isLoading, error } = useAppointmentStore();
   const today = new Date();
 
@@ -37,4 +37,4 @@ const AppointmentList: React.FC = () => {
   );
 };
 
-export default AppointmentList;
+export default DailyAppointmentList;

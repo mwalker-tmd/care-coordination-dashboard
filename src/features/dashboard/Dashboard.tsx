@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import WeeklyAppointmentList from './features/appointments/WeeklyAppointmentList';
-import AppointmentList from './features/appointments/AppointmentList';
+import WeeklyAppointmentList from '../../features/appointments/WeeklyAppointmentList';
+import DailyAppointmentList from '../../features/appointments/DailyAppointmentList';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState<'weekly' | 'today'>('weekly');
@@ -31,7 +31,7 @@ const Dashboard = () => {
 
         <div>
           {activeTab === 'weekly' && <WeeklyAppointmentList />}
-          {activeTab === 'today' && <AppointmentList />}
+          {activeTab === 'today' && <DailyAppointmentList />}
         </div>
       </div>
     </div>

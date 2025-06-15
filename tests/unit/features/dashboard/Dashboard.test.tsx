@@ -1,10 +1,10 @@
 import React from 'react';
 import { render, screen, fireEvent, act } from '@testing-library/react';
-import Dashboard from '../../src/Dashboard';
-import { useAppointmentStore } from '../../src/lib/state/appointmentStore';
+import Dashboard from '../../../../src/features/dashboard/Dashboard';
+import { useAppointmentStore } from '../../../../src/lib/state/appointmentStore';
 
 // Mock the appointment store
-jest.mock('../../src/lib/state/appointmentStore', () => ({
+jest.mock('../../../../src/lib/state/appointmentStore', () => ({
   useAppointmentStore: jest.fn()
 }));
 
@@ -100,7 +100,7 @@ describe('Dashboard', () => {
     expect(screen.queryByText('Loading appointments...')).not.toBeInTheDocument();
   });
 
-  it('renders AppointmentList when Today tab is active', async () => {
+  it('renders DailyAppointmentList when Today tab is active', async () => {
     // Mock the store to return some appointments
     (useAppointmentStore as unknown as jest.Mock).mockImplementation(() => ({
       fetchAllAppointments: jest.fn(),

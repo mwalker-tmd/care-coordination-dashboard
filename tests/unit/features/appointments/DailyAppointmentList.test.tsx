@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import AppointmentList from '../../../../src/features/appointments/AppointmentList';
+import DailyAppointmentList from '../../../../src/features/appointments/DailyAppointmentList';
 import * as clientApi from '../../../../src/lib/api/client';
 import { useAppointmentStore } from '../../../../src/lib/state/appointmentStore';
 
@@ -21,26 +21,27 @@ jest.mock('../../../../src/lib/api/client', () => {
   };
 });
 
-describe('AppointmentList', () => {
+describe('DailyAppointmentList', () => {
   beforeEach(() => {
     useAppointmentStore.setState({ appointments: [] });
   });
 
   it('renders fetched appointments', async () => {
-    render(<AppointmentList />);
+    render(<DailyAppointmentList />);
     
     await waitFor(() => {
       const appointmentCards = screen.getAllByTestId('appointment-card');
       expect(appointmentCards).toHaveLength(3);
       
-      expect(screen.getAllByTestId('appointment-patient-name')[0]).toHaveTextContent('Alice Johnson');
-      expect(screen.getAllByTestId('appointment-patient-name')[1]).toHaveTextContent('Bob Smith');
-      expect(screen.getAllByTestId('appointment-patient-name')[2]).toHaveTextContent('Carol White');
+      const patientNames = screen.getAllByTestId('appointment-patient-name');
+      expect(patientNames[0]).toHaveTextContent('Alice Johnson');
+      expect(patientNames[1]).toHaveTextContent('Bob Smith');
+      expect(patientNames[2]).toHaveTextContent('Carol White');
     });
   });
 
   it('renders the heading', async () => {
-    render(<AppointmentList />);
+    render(<DailyAppointmentList />);
     
     await waitFor(() => {
       expect(screen.getByTestId('appointment-list-title')).toHaveTextContent("Today's Appointments");
@@ -48,19 +49,20 @@ describe('AppointmentList', () => {
   });
 
   it('renders empty state when there are no appointments', async () => {
+    // Mock empty appointments
     jest.spyOn(clientApi, 'fetchAppointments').mockResolvedValueOnce([]);
-    render(<AppointmentList />);
+    render(<DailyAppointmentList />);
     
     await waitFor(() => {
       expect(screen.getByTestId('appointment-list-empty')).toHaveTextContent('No appointments for today.');
     });
   });
 
-  it('renders error message when error is present', () => {
-    // Mock fetchAllAppointments to do nothing
-    jest.spyOn(useAppointmentStore.getState(), 'fetchAllAppointments').mockImplementation(() => Promise.resolve());
-    useAppointmentStore.setState({ appointments: [], error: 'Something went wrong', isLoading: false });
-    render(<AppointmentList />);
-    expect(screen.getByTestId('appointment-list-error')).toHaveTextContent(/Error: Something went wrong/);
+  it('renders error message when error is present', async () => {
+    jest.spyOn(clientApi, 'fetchAppointments').mockRejectedValueOnce(new Error('Something went wrong'));
+    render(<DailyAppointmentList />);
+    await waitFor(() => {
+      expect(screen.getByTestId('appointment-list-error')).toHaveTextContent(/Error: Something went wrong/);
+    });
   });
 });
