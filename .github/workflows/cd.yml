@@ -8,11 +8,11 @@ on:
     types: [published]
 
 jobs:
-  common:
-    uses: ./.github/workflows/common.yml
+  validate_codebase:
+    uses: ./.github/workflows/validate_codebase.yml
 
   deploy:
-    needs: common
+    needs: validate_codebase
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

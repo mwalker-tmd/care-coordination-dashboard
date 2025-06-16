@@ -4,5 +4,5 @@ on:
   pull_request:
 
 jobs:
-  common:
-    uses: ./.github/workflows/common.yml
+  validate_codebase:
+    uses: ./.github/workflows/validate_codebase.yml
