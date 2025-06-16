@@ -1,6 +1,6 @@
 {
   "name": "care-coordination-dashboard",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
@@ -17,7 +17,7 @@
     "url": "git+https://github.com/mwalker-tmd/care-coordination-dashboard.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Mark L. Walker",
   "license": "MIT",
   "type": "module",
   "bugs": {
@@ -60,5 +60,5 @@
   "directories": {
     "test": "tests"
   },
-  "description": ""
+  "description": "A UX demo project showcasing a care coordination dashboard built with React and TypeScript."
 }
