@@ -8,6 +8,7 @@ jobs:
     name: Lint Check
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-node-deps
       - name: Run linter
         run: npm run lint
@@ -16,6 +17,7 @@ jobs:
     name: TypeScript Check
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-node-deps
       - name: Run TypeScript type checks
         run: npx tsc --noEmit
@@ -24,6 +26,7 @@ jobs:
     name: Test Suite
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/setup-node-deps
       - name: Run tests
         run: npm test
