@@ -91,6 +91,67 @@ yarn test:coverage
 - `npm run lint` - Run linting
 - `npm run format` - Format code
 
+## Setting Up the Project for Deployment via Vercel
+> _NOTE: This section is informational only. It only needs to be completed when setting up or changing the CD pipeline._ 
+
+### Creating a New Project
+1. Log in to your Vercel account.
+2. Click on **New Project**.
+3. Import your GitHub repository.
+4. Configure the project settings:
+   - **Framework Preset:** Select the appropriate framework (e.g., Vite).
+   - **Build Command:** `npm run build`
+   - **Output Directory:** `dist`
+   - **Install Command:** `npm install`
+
+### Environment Variables
+> _NOTE: This environment variable is not required at this time because the backend API responses are mocked in the frontend code for demonstration purposes. It will be required once the backend API is built and running._
+- Add the following environment variables in your Vercel project settings:
+  - `VITE_API_BASE_URL`: The URL of your API.
+  - Any other required environment variables.
+
+### Custom Domain
+- If you have a custom domain, go to the **Domains** section in your project settings and add it.
+
+### Deployment
+- Vercel will automatically deploy your project when changes are pushed to the linked GitHub repository.
+- You can also manually deploy from the Vercel dashboard.
+
+### GitHub Environment Variables for CD Pipeline
+To enable the GitHub Actions CD pipeline, set up the following secrets in your GitHub repository:
+1. Go to your GitHub repository.
+2. Navigate to **Settings** > **Secrets and variables** > **Actions**.
+3. Add the following secrets:
+   - `VERCEL_TOKEN`: Your Vercel API token.
+   - `VERCEL_ORG_ID`: Your Vercel organization ID.
+   - `VERCEL_PROJECT_ID`: Your Vercel project ID.
+
+For more detailed instructions, refer to the [Vercel documentation](https://vercel.com/docs).
+
+## Deployment with Vercel
+
+### Prerequisites
+- Node.js and npm installed.
+- Vercel CLI installed globally:
+  ```bash
+  npm install -g vercel
+  ```
+
+### Deploying the Project
+1. Run the following command in the project directory:
+   ```bash
+   vercel
+   ```
+2. Follow the prompts to link your Vercel account and select the project.
+
+### Environment Variables
+- Set up any required environment variables in your Vercel project settings.
+
+### Additional Configuration
+- Refer to the `vercel.json` file for any specific Vercel configuration.
+
+For more information, visit the [Vercel documentation](https://vercel.com/docs). 
+
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -110,4 +171,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📫 Contact
 
-For questions or support, please open an issue in the GitHub repository. 
+For questions or support, please open an issue in the GitHub repository.

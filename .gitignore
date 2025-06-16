@@ -148,3 +148,4 @@ dist
 
 #Vite build files
 .vite/*
+.vercel
