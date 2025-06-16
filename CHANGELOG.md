@@ -12,5 +12,5 @@
    - Updated project structure for better organization.
 
    ### Fixed
-   - (Initial Release))
+   - (Initial Release)
 
