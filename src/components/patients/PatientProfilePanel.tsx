@@ -14,12 +14,29 @@ export const PatientProfilePanel: React.FC = () => {
         Patient Profile
       </h2>
       <div className="space-y-2">
-        <div><strong>Name:</strong> <span data-testid="profile-name">{selectedPatient.name}</span></div>
-        <div><strong>Date of Birth:</strong> <span data-testid="profile-dob">{selectedPatient.dateOfBirth}</span></div>
-        <div><strong>Phone:</strong> <span data-testid="profile-phone">{selectedPatient.contactInfo.phone}</span></div>
-        <div><strong>Email:</strong> <span data-testid="profile-email">{selectedPatient.contactInfo.email}</span></div>
-        <div><strong>Primary Care Team:</strong> <span data-testid="profile-care-team">{selectedPatient.primaryCareTeam}</span></div>
-        <div><strong>Conditions:</strong> <span data-testid="profile-conditions">{selectedPatient.conditions.join(', ')}</span></div>
+        <div>
+          <strong>Name:</strong> <span data-testid="profile-name">{selectedPatient.name}</span>
+        </div>
+        <div>
+          <strong>Date of Birth:</strong>{' '}
+          <span data-testid="profile-dob">{selectedPatient.dateOfBirth}</span>
+        </div>
+        <div>
+          <strong>Phone:</strong>{' '}
+          <span data-testid="profile-phone">{selectedPatient.contactInfo.phone}</span>
+        </div>
+        <div>
+          <strong>Email:</strong>{' '}
+          <span data-testid="profile-email">{selectedPatient.contactInfo.email}</span>
+        </div>
+        <div>
+          <strong>Primary Care Team:</strong>{' '}
+          <span data-testid="profile-care-team">{selectedPatient.primaryCareTeam}</span>
+        </div>
+        <div>
+          <strong>Conditions:</strong>{' '}
+          <span data-testid="profile-conditions">{selectedPatient.conditions.join(', ')}</span>
+        </div>
       </div>
     </div>
   );

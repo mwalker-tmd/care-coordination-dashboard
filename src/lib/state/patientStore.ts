@@ -25,7 +25,7 @@ export const usePatientStore = create<PatientStore>((set, get) => ({
   },
 
   setSelectedPatientId: (id: string) => {
-    const patient = get().patients.find((p) => p.id === id) || null;
+    const patient = get().patients.find(p => p.id === id) || null;
     set({ selectedPatientId: id, selectedPatient: patient });
   },
 }));

@@ -23,11 +23,11 @@ export const PatientSelector: React.FC = () => {
         id="patient-select"
         data-testid="patient-select"
         value={selectedPatientId || ''}
-        onChange={(e) => setSelectedPatientId(e.target.value)}
+        onChange={e => setSelectedPatientId(e.target.value)}
         className="block w-auto pl-3 pr-10 py-1.5 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md"
       >
         <option value="">Select a patient</option>
-        {patients.map((patient) => (
+        {patients.map(patient => (
           <option key={patient.id} value={patient.id} data-testid={`patient-option-${patient.id}`}>
             {patient.name}
           </option>
