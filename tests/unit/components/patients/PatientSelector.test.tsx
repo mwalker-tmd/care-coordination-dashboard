@@ -72,6 +72,30 @@ describe('PatientSelector', () => {
     expect(options[0]).toHaveTextContent('Select a patient');
   });
 
+  it('renders with null selectedPatientId and shows default option selected', async () => {
+    usePatientStore.setState({
+      patients: mockPatients,
+      selectedPatientId: null,
+      selectedPatient: null,
+      fetchAllPatients: jest.fn(),
+      setSelectedPatientId: jest.fn(),
+    });
+
+    render(<PatientSelector />);
+    
+    const select = await screen.findByTestId('patient-select');
+    expect(select).toBeInTheDocument();
+    
+    // When selectedPatientId is null, the select should have empty value
+    // which corresponds to the "Select a patient" option being selected
+    expect(select).toHaveValue('');
+    
+    // Verify the default option is present and selected
+    const options = select.querySelectorAll('option');
+    expect(options[0]).toHaveTextContent('Select a patient');
+    expect(options[0]).toHaveValue('');
+  });
+
   it('calls setSelectedPatientId when selection changes', async () => {
     const setSelectedPatientId = jest.fn();
     usePatientStore.setState({
