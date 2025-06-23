@@ -34,9 +34,10 @@ const Dashboard = () => {
           {activeTab === 'weekly' && <WeeklyAppointmentList />}
           {activeTab === 'today' && <DailyAppointmentList />}
         </div>
-      </div>
-      <div className="col-span-1">
-        <PatientProfileView />
+
+        <div className="mt-4">
+          <PatientProfileView />
+        </div>
       </div>
     </div>
   );

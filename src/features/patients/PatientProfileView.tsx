@@ -4,7 +4,7 @@ import { PatientProfilePanel } from '../../components/patients/PatientProfilePan
 
 export const PatientProfileView: React.FC = () => {
   return (
-    <div data-testid="patient-profile-view">
+    <div className="bg-white p-6 rounded-lg shadow-md" data-testid="patient-profile-view">
       <PatientSelector />
       <PatientProfilePanel />
     </div>

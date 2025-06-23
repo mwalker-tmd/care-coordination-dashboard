@@ -20,7 +20,7 @@ const WeeklyAppointmentList: React.FC = () => {
   const days = Array.from({ length: 7 }, (_, i) => addDays(weekStart, i));
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen" data-testid="weekly-appointment-list-container">
+    <div data-testid="weekly-appointment-list-container">
       <h2
         className="text-3xl font-bold mb-8 text-center"
         data-testid="weekly-appointment-list-title"
