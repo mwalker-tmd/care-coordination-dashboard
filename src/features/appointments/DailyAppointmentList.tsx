@@ -17,7 +17,7 @@ const DailyAppointmentList: React.FC = () => {
   const todaysAppointments = getAppointmentsByDate(today);
 
   return (
-    <div className="p-8 bg-gray-50">
+    <div>
       <h2 className="text-3xl font-bold mb-8" data-testid="appointment-list-title">
         Today's Appointments
       </h2>

@@ -1,5 +1,5 @@
 import { render, screen, waitFor } from '@testing-library/react';
-import DailyAppointmentList from '../../src/features/appointments/DailyAppointmentList';
+import Dashboard from '../../src/features/dashboard/Dashboard';
 import * as clientApi from '../../src/lib/api/client';
 import { useAppointmentStore } from '../../src/lib/state/appointmentStore';
 
@@ -26,27 +26,37 @@ jest.mock('../../src/lib/api/client', () => {
   };
 });
 
-describe('DailyAppointmentList Integration', () => {
+describe('Dashboard Integration', () => {
   beforeEach(() => {
     useAppointmentStore.setState({ appointments: [] });
   });
 
-  it('renders appointments fetched from API', async () => {
-    render(<DailyAppointmentList />);
+  it('renders dashboard with appointments', async () => {
+    render(<Dashboard />);
     expect(clientApi.fetchAppointments).toHaveBeenCalledTimes(1);
 
-    await waitFor(() => {
-      expect(screen.getByText('Alice Johnson')).toBeInTheDocument();
-      expect(screen.getByText('Bob Smith')).toBeInTheDocument();
-      expect(screen.getByText('Carol White')).toBeInTheDocument();
-    });
+    // Check for dashboard elements using data-testid
+    expect(await screen.findByTestId('dashboard-container')).toBeInTheDocument();
+    expect(await screen.findByTestId('dashboard-title')).toHaveTextContent('Care Coordination Dashboard');
+    expect(await screen.findByTestId('weekly-tab-button')).toBeInTheDocument();
+    expect(await screen.findByTestId('today-tab-button')).toBeInTheDocument();
 
-    expect(screen.getByText(nine.toISOString())).toBeInTheDocument();
-    expect(screen.getByText(tenThirty.toISOString())).toBeInTheDocument();
-    expect(screen.getByText(thirteen.toISOString())).toBeInTheDocument();
+    // Check for appointment cards and their content
+    const patientNames = ['Alice Johnson', 'Bob Smith', 'Carol White'];
+    const appointmentTimes = [nine.toISOString(), tenThirty.toISOString(), thirteen.toISOString()];
+    const appointmentStatuses = ['completed', 'upcoming', 'cancelled'];
 
-    expect(screen.getByText(/Status: upcoming/i)).toBeInTheDocument();
-    expect(screen.getByText(/Status: completed/i)).toBeInTheDocument();
-    expect(screen.getByText(/Status: cancelled/i)).toBeInTheDocument();
+    // Wait for appointment cards to appear
+    const cards = await screen.findAllByTestId('appointment-card');
+    expect(cards).toHaveLength(3);
+
+    const names = await screen.findAllByTestId('appointment-patient-name');
+    expect(names.map(n => n.textContent ?? '')).toEqual(patientNames);
+
+    const times = await screen.findAllByTestId('appointment-time');
+    expect(times.map(t => t.textContent ?? '')).toEqual(appointmentTimes);
+
+    const statuses = await screen.findAllByTestId('appointment-status');
+    expect(statuses.map(s => (s.textContent ?? '').replace('Status:', '').trim())).toEqual(appointmentStatuses);
   });
 });
