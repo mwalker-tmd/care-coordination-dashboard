@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import WeeklyAppointmentList from '../../features/appointments/WeeklyAppointmentList';
 import DailyAppointmentList from '../../features/appointments/DailyAppointmentList';
+import { PatientProfileView } from '../../features/patients/PatientProfileView';
 
 const Dashboard = () => {
   const [activeTab, setActiveTab] = useState<'weekly' | 'today'>('weekly');
@@ -33,6 +34,9 @@ const Dashboard = () => {
           {activeTab === 'weekly' && <WeeklyAppointmentList />}
           {activeTab === 'today' && <DailyAppointmentList />}
         </div>
+      </div>
+      <div className="col-span-1">
+        <PatientProfileView />
       </div>
     </div>
   );
