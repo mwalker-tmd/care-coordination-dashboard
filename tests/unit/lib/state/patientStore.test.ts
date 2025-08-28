@@ -61,7 +61,7 @@ describe('PatientStore', () => {
     expect(state.selectedPatient).toEqual(mockPatients[0]);
   });
 
-  it('should set selected patient', () => {
+  it('should set selected patient from null state', () => {
     usePatientStore.setState({ patients: mockPatients });
     
     usePatientStore.getState().setSelectedPatientId('2');
@@ -102,12 +102,7 @@ describe('PatientStore', () => {
     expect(usePatientStore.getState().selectedPatient).toBeNull();
   });
 
-  it('should set selected patient when setSelectedPatientId is called', () => {
-    const mockPatients = [
-      { id: '1', name: 'John Doe', dateOfBirth: '1990-01-01', contactInfo: { phone: '123-456-7890', email: 'john@example.com' }, primaryCareTeam: 'Team A', conditions: ['Condition 1'] },
-      { id: '2', name: 'Jane Smith', dateOfBirth: '1992-02-02', contactInfo: { phone: '098-765-4321', email: 'jane@example.com' }, primaryCareTeam: 'Team B', conditions: ['Condition 2'] },
-    ];
-
+  it('should change selected patient from one to another', () => {
     // Set up initial state with patients
     usePatientStore.setState({
       patients: mockPatients,
