@@ -3,6 +3,11 @@ name: Validate Codebase Workflow
 on:
   workflow_call:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   lint:
     name: Lint Check
@@ -30,3 +35,32 @@ jobs:
       - uses: ./.github/actions/setup-node-deps
       - name: Run tests
         run: npm test
+      - name: Upload coverage reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+          retention-days: 30
+
+  deploy-coverage:
+    name: Deploy Coverage to GitHub Pages
+    runs-on: ubuntu-latest
+    needs: tests
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Download coverage reports
+        uses: actions/download-artifact@v4
+        with:
+          name: coverage-report
+          path: coverage/
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload to GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: coverage/lcov-report/
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

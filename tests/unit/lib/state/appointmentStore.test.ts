@@ -1,6 +1,6 @@
-import { useAppointmentStore } from '../../../src/lib/state/appointmentStore';
-import * as clientApi from '../../../src/lib/api/client';
-import { Appointment } from '../../../src/types/appointment';
+import { useAppointmentStore } from '../../../../src/lib/state/appointmentStore';
+import * as clientApi from '../../../../src/lib/api/client';
+import { Appointment } from '../../../../src/types/appointment';
 import { startOfWeek, addDays } from 'date-fns';
 
 describe('appointmentStore', () => {
